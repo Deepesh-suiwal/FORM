@@ -20,6 +20,8 @@ app.post("/user/form/save", async (req, res) => {
   try {
     const { email, ...rest } = req.body;
 
+    console.log(req.body);
+
     const ExistingUser = await UserDetail.findOne({ email });
     if (ExistingUser) {
       return res.status(409).json({ message: "Email already exists." });

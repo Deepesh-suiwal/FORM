@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import instance from "./axiosConfig";
 function App() {
   const [data, setData] = useState({
@@ -70,13 +70,75 @@ function App() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const res = await instance.post("/user/form/save", data);
+
+    const frmData = new FormData();
+
+    frmData.append("name", data.name);
+    frmData.append("email", data.email);
+    frmData.append("number", data.number);
+    frmData.append("dob", data.dob);
+    frmData.append("gender", data.gender);
+    frmData.append("aadhaar1", data.aadhaar1);
+    frmData.append("aadhaar2", data.aadhaar2);
+    frmData.append("parentName", data.parentName);
+    frmData.append("parentPhone", data.parentPhone);
+    frmData.append("localAddress", data.localAddress);
+    frmData.append("isSameAddress", data.isSameAddress);
+    frmData.append("permanentAddress", data.permanentAddress);
+    frmData.append("isStudent", data.isStudent);
+    frmData.append("isWorking", data.isWorking);
+    frmData.append("lastQualification", data.lastQualification);
+    frmData.append("year", data.year);
+    frmData.append("college", data.college);
+    frmData.append("designation", data.designation);
+    frmData.append("company", data.company);
+    frmData.append("course", data.course);
+    frmData.append("howDidYouKnow", data.howDidYouKnow);
+    frmData.append("friendName", data.friendName);
+
+    // for (const key of frmData.keys()) {
+    //   console.log(key);
+    // }
+    // for (const value of frmData.values()) {
+    //   console.log(value);
+    // }
+
+    const res = await instance.post("/user/form/save", frmData);
+
+    // setData({
+    //   name: "",
+    //   email: "",
+    //   number: "",
+    //   dob: "",
+    //   gender: "",
+    //   aadhaar1: null,
+    //   aadhaar2: null,
+    //   parentName: "",
+    //   parentPhone: "",
+    //   localAddress: "",
+    //   isSameAddress: false,
+    //   permanentAddress: "",
+    //   isStudent: false,
+    //   isWorking: false,
+    //   lastQualification: "",
+    //   year: "",
+    //   college: "",
+    //   designation: "",
+    //   company: "",
+    //   course: "",
+    //   howDidYouKnow: "",
+    //   friendName: "",
+    // });
     console.log(res);
   }
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-100">
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-8"
+        encType="multipart/form-data"
+      >
         <section className="bg-white p-6 rounded shadow">
           <h3 className="text-xl font-semibold mb-4">Personal Details</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -90,6 +152,7 @@ function App() {
                 className="w-full mt-1 p-2 border rounded"
                 placeholder="Full name"
                 required
+                autoFocus
               />
             </div>
             <div>
@@ -111,6 +174,7 @@ function App() {
                 name="number"
                 value={data.number}
                 onChange={handleChange}
+                pattern="[0-9]{10}"
                 className="w-full mt-1 p-2 border rounded"
                 placeholder="Phone"
                 required
@@ -186,8 +250,11 @@ function App() {
             <div>
               <label className="block text-sm font-medium">Parent Phone</label>
               <input
-                type="tel"
+                type="number"
                 name="parentPhone"
+                pattern="^\d{10}$"
+                // min={10}
+                maxLength={10}
                 value={data.parentPhone}
                 onChange={handleChange}
                 className="w-full mt-1 p-2 border rounded"
@@ -216,7 +283,6 @@ function App() {
                 name="isSameAddress"
                 checked={data.isSameAddress}
                 onChange={handleChange}
-                required
               />
               <label>Permanent address same as local address</label>
             </div>

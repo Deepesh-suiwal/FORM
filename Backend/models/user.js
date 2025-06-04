@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import { type } from "os";
+import { buffer } from "stream/consumers";
 
 const userSchema = new mongoose.Schema(
   {
@@ -9,11 +10,14 @@ const userSchema = new mongoose.Schema(
     dob: { type: Date, required: true },
     gender: { type: String, enum: ["Male", "Female", "Other"], required: true },
     aadhaar1: {
-      type: String,
+      type: String, 
+      required: true,
     },
     aadhaar2: {
-      type: String,
+      type: String, 
+      required: true,
     },
+
     parentName: { type: String },
     parentPhone: { type: String },
     localAddress: { type: String, required: true },

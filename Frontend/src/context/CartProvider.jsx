@@ -14,4 +14,4 @@ function CartProvider({ children }) {
 export function cartData() {
   return useContext(cartContext);
 }
-export { CartProvider };
+export default CartProvider;

@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { cartData } from "../context/cartProvider.jsx";
+import { cartData } from "../context/CartProvider.jsx";
 import instance from "../axiosConfig.js";
 import { useNavigate } from "react-router-dom";
 

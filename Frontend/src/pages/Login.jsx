@@ -1,11 +1,14 @@
 import { useState } from "react";
 import instance from "../axiosConfig";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { cartData } from "../context/cartProvider";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
+  const { setData, setToken, } = cartData();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -13,9 +16,12 @@ function Login() {
 
     try {
       const res = await instance.post("/api/auth/login", { email, password });
+      
       if (res.status == 200) {
-        navigate("/UserDetail")
-        console.log(res);
+        setData(res.data.user);
+        localStorage.setItem("token", res.data.token);
+        setToken(res.data.token);
+        navigate("/UserDetail");
       }
     } catch (err) {
       setError("Login error");

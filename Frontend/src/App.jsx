@@ -2,7 +2,8 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserDetail from "./pages/UserDetail";
-import First from "./First"
+import First from "./First";
+import { CartProvider } from "./context/CartProvider";
 
 function App() {
   const name = createBrowserRouter([
@@ -29,7 +30,9 @@ function App() {
   ]);
   return (
     <>
-      <RouterProvider router={name} />
+      <CartProvider>
+        <RouterProvider router={name} />
+      </CartProvider>
     </>
   );
 }

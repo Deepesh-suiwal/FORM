@@ -1,7 +1,7 @@
 import UserDetail from "../models/user.js";
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
-
+import jwt from "jsonwebtoken";
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
@@ -23,7 +23,11 @@ function uploadToCloudinary(buffer, folder) {
     stream.end(buffer);
   });
 }
-
+function generateToken(dataId) {
+  return jwt.sign({ id: dataId }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
+}
 
 export async function Register(req, res) {
   upload.fields([
@@ -37,7 +41,6 @@ export async function Register(req, res) {
 
     const { email, ...rest } = req.body;
 
-
     if (!req.files?.aadhaar1 || !req.files?.aadhaar2) {
       return res
         .status(400)
@@ -45,7 +48,6 @@ export async function Register(req, res) {
     }
 
     try {
-    
       const userExists = await UserDetail.findOne({ email });
       if (userExists)
         return res.status(409).json({ message: "Email already registered." });
@@ -55,7 +57,6 @@ export async function Register(req, res) {
         uploadToCloudinary(req.files.aadhaar2[0].buffer, "aadhaar"),
       ]);
 
-     
       const userData = {
         email,
         ...rest,
@@ -76,7 +77,6 @@ export async function Register(req, res) {
   });
 }
 
-
 export const Login = async (req, res) => {
   try {
     const { email } = req.body;
@@ -88,9 +88,25 @@ export const Login = async (req, res) => {
         .json({ message: "Invalid email or user not found." });
     }
 
-    res.status(200).json({ message: "Login successful", user });
+    const token = generateToken(user._id);
+
+    res.status(200).json({ message: "Login successful", user, token });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+export async function get(req, res, next) {
+  try {
+    const user = await UserDetail.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: "data not found" });
+    }
+    res.json(user);
+    console.log(user);
+  } catch (err) {
+    console.error("getMe Error:", err.message);
+    next(err);
+  }
+}

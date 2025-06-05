@@ -3,6 +3,7 @@ import "dotenv/config";
 import { connectDB } from "./config/db.js";
 import cors from "cors";
 import authRouter from "./Routes/auth.js";
+import userRouter from "./Routes/user.js";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/auth", authRouter);
+app.use("/api/user", userRouter);
 
 app.listen(PORT, () => {
   console.log(`Your backend is running at port ${PORT}`);

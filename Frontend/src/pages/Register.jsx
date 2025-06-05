@@ -7,7 +7,7 @@ function Register() {
   const [data, setData] = useState({
     name: "",
     email: "",
-    password:"",
+    password: "",
     number: "",
     dob: "",
     gender: "",
@@ -129,10 +129,7 @@ function Register() {
     //   friendName: "",
     // });
     if (res.status == 201) {
-      setTimeout(() => {
-        // window.location.href = "/";
-        navigate("/");
-      }, 1000);
+      navigate("/");
     }
 
     console.log(res);
@@ -190,17 +187,19 @@ function Register() {
             <div>
               <label className="block text-sm font-medium">Phone</label>
               <input
-                type="Number"
+                type="tel"
                 name="number"
                 value={data.number}
                 onChange={handleChange}
                 pattern="\d{10}"
                 maxLength={10}
+                minLength={10}
                 className="w-full mt-1 p-2 border rounded"
                 placeholder="Phone"
                 required
               />
             </div>
+
             <div>
               <label className="block text-sm font-medium">Date of Birth</label>
               <input
@@ -269,16 +268,18 @@ function Register() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium">Parent Phone</label>
+              <label className="block text-sm font-medium">Phone</label>
               <input
-                type="number"
+                type="tel"
                 name="parentPhone"
-                pattern="^\d{10}$"
-                // min={10}
-                maxLength={10}
                 value={data.parentPhone}
                 onChange={handleChange}
+                pattern="\d{10}"
+                maxLength={10}
+                minLength={10}
                 className="w-full mt-1 p-2 border rounded"
+                placeholder="Phone"
+                required
               />
             </div>
           </div>

@@ -1,11 +1,11 @@
 import { useState } from "react";
 import instance from "../axiosConfig";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navivage = useNavigate();
+  const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -14,6 +14,7 @@ function Login() {
     try {
       const res = await instance.post("/api/auth/login", { email, password });
       if (res.status == 200) {
+        navigate("/UserDetail")
         console.log(res);
       }
     } catch (err) {
@@ -59,7 +60,7 @@ function Login() {
         <button
           type="button"
           className="text-blue-600 underline cursor-pointer"
-          onClick={() => navivage("/Register")}
+          onClick={() => navigate("/Register")}
         >
           Register
         </button>

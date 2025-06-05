@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import instance from "./axiosConfig";
+import instance from "../axiosConfig";
 import { useNavigate } from "react-router-dom";
 function Login() {
   const [email, setEmail] = useState("");
@@ -12,11 +12,9 @@ function Login() {
     setError("");
 
     try {
-      const res = await instance.post("/user/login", { email, password });
-      if (res.data.success) {
-        onLoginSuccess(res.data.user);
-      } else {
-        setError(res.data.message || "Login failed");
+      const res = await instance.post("/api/auth/login", { email, password });
+      if (res.status == 200) {
+        console.log(res);
       }
     } catch (err) {
       setError("Login error");
@@ -37,16 +35,19 @@ function Login() {
         onChange={(e) => setEmail(e.target.value)}
         placeholder="Email"
         required
-        className="w-full p-2 border rounded"
+        className="w-[50%] p-2 border rounded"
+        autoFocus
       />
+      <br />
       <input
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
         required
-        className="w-full p-2 border rounded"
+        className="w-[50%] p-2 border rounded"
       />
+      <br />
       <button
         type="submit"
         className="bg-blue-600 text-white px-4 py-2 rounded"
@@ -54,8 +55,12 @@ function Login() {
         Login
       </button>
       <p className="mt-2 text-sm">
-        Don't have an account?{" "}
-        <button type="button" className="text-blue-600 underline cursor-pointer" onClick={()=> navivage("/Register")}>
+        Don't have an account?
+        <button
+          type="button"
+          className="text-blue-600 underline cursor-pointer"
+          onClick={() => navivage("/Register")}
+        >
           Register
         </button>
       </p>

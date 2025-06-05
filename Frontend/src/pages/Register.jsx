@@ -1,11 +1,13 @@
 import { useState } from "react";
-// import instance from "./axiosConfig";
+import instance from "../axiosConfig.js";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
   const [data, setData] = useState({
     name: "",
     email: "",
+    password:"",
     number: "",
     dob: "",
     gender: "",
@@ -27,7 +29,7 @@ function Register() {
     howDidYouKnow: "",
     friendName: "",
   });
-  const navivage = useNavigate();
+
   function handleChange(e) {
     const { name, value, type, checked, files } = e.target;
 
@@ -77,6 +79,7 @@ function Register() {
 
     frmData.append("name", data.name);
     frmData.append("email", data.email);
+    frmData.append("password", data.password);
     frmData.append("number", data.number);
     frmData.append("dob", data.dob);
     frmData.append("gender", data.gender);
@@ -98,7 +101,8 @@ function Register() {
     frmData.append("howDidYouKnow", data.howDidYouKnow);
     frmData.append("friendName", data.friendName);
 
-    const res = await instance.post("/user/form/save", frmData);
+    const res = await instance.post("/api/auth/register", frmData);
+    alert("user successfully login!");
 
     // setData({
     //   name: "",
@@ -124,6 +128,13 @@ function Register() {
     //   howDidYouKnow: "",
     //   friendName: "",
     // });
+    if (res.status == 201) {
+      setTimeout(() => {
+        // window.location.href = "/";
+        navigate("/");
+      }, 1000);
+    }
+
     console.log(res);
   }
 
@@ -162,6 +173,20 @@ function Register() {
                 required
               />
             </div>
+
+            <div>
+              <label className="block text-sm font-medium">Password</label>
+              <input
+                type="password"
+                name="password"
+                value={data.password}
+                onChange={handleChange}
+                className="w-full mt-1 p-2 border rounded"
+                placeholder="Password"
+                required
+              />
+            </div>
+
             <div>
               <label className="block text-sm font-medium">Phone</label>
               <input
@@ -470,7 +495,7 @@ function Register() {
         <button
           type="button"
           className="text-blue-600 underline cursor-pointer"
-          onClick={() => navivage("/")}
+          onClick={() => navigate("/")}
         >
           Login
         </button>

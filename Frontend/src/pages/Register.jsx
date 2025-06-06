@@ -40,9 +40,16 @@ function Register() {
         [name]: checked,
       }));
     } else if (type === "file") {
+      const file = files[0];
+
+      if (file && file.size > 2 * 1024 * 1024) {
+        alert("File size should be less than 2MB");
+        return;
+      }
+
       setData((prev) => ({
         ...prev,
-        [name]: files[0],
+        [name]: file,
       }));
     } else {
       setData((prev) => ({
@@ -141,6 +148,7 @@ function Register() {
       console.log(res);
     } catch (err) {
       console.log(err);
+      setLoading(false);
     }
   }
 
@@ -165,6 +173,7 @@ function Register() {
                     onChange={handleChange}
                     className="w-full mt-1 p-2 border rounded"
                     placeholder="Full name"
+                    maxLength={30}
                     required
                     autoFocus
                   />
@@ -192,6 +201,7 @@ function Register() {
                     className="w-full mt-1 p-2 border rounded"
                     placeholder="Password"
                     required
+                    maxLength={16}
                   />
                 </div>
 
@@ -282,6 +292,7 @@ function Register() {
                     value={data.parentName}
                     onChange={handleChange}
                     className="w-full mt-1 p-2 border rounded"
+                    maxLength={30}
                   />
                 </div>
                 <div>
@@ -318,6 +329,7 @@ function Register() {
                     onChange={handleChange}
                     className="w-full mt-1 p-2 border rounded"
                     required
+                    maxLength={100}
                   />
                 </div>
                 <div className="flex items-center gap-2">
@@ -345,6 +357,7 @@ function Register() {
                     className="w-full mt-1 p-2 border rounded"
                     disabled={data.isSameAddress}
                     required
+                    maxLength={100}
                   />
                 </div>
               </div>
@@ -384,14 +397,18 @@ function Register() {
                     onChange={handleChange}
                     className="p-2 border rounded"
                     placeholder="Last Qualification"
+                    maxLength={10}
                   />
                   <input
-                    type="text"
+                    type="tel"
                     name="year"
                     value={data.year}
                     onChange={handleChange}
                     className="p-2 border rounded"
                     placeholder="Completion Year"
+                    maxLength={4}
+                    minLength={4}
+                    // pattern="\d{10}"
                   />
                   <input
                     type="text"
@@ -400,6 +417,7 @@ function Register() {
                     onChange={handleChange}
                     className="p-2 border rounded"
                     placeholder="College/University"
+                    maxLength={30}
                   />
                 </div>
               )}
@@ -413,6 +431,7 @@ function Register() {
                     onChange={handleChange}
                     className="p-2 border rounded"
                     placeholder="Designation"
+                    maxLength={10}
                   />
                   <input
                     type="text"
@@ -421,6 +440,7 @@ function Register() {
                     onChange={handleChange}
                     className="p-2 border rounded"
                     placeholder="Company"
+                    maxLength={20}
                   />
                 </div>
               )}

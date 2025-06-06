@@ -3,7 +3,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserDetail from "./pages/UserDetail";
 import First from "./First";
-import { CartProvider } from "./context/CartProvider.jsx";
+import CartProvider from "./context/CartProvider";
 
 function App() {
   const name = createBrowserRouter([
